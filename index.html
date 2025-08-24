@@ -1,32 +1,140 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>あんどうのサイト</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      color: #333;
-    }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      text-decoration: none;
-      color: white;
-      background: #007acc;
-      padding: 10px 20px;
-      border-radius: 8px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Hiroto's All Projects</title>
+<style>
+  body {
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+    color: #333;
+  }
+  header {
+    background: #0366d6;
+    color: #fff;
+    padding: 20px 40px;
+    text-align: center;
+  }
+  header h1 { font-size: 36px; }
+  nav a {
+    color: #fff;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+  }
+  nav a:hover { opacity: 0.8; }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+  }
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .card-content {
+    padding: 20px;
+  }
+  .card-content h3 { font-size: 22px; margin-bottom: 10px; }
+  .card-content p { font-size: 14px; color: #555; margin-bottom: 15px; }
+  .card-content a {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #0366d6;
+    color: #fff;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .card-content a:hover { background: #024c9a; }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    color: #fff;
+  }
+  footer a { color: #fff; margin: 0 10px; }
+</style>
 </head>
 <body>
-  <h1>こんにちは！</h1>
-  <p>これはGitHub Pagesで公開した私のサイトです。</p>
-  <a href="https://github.com/hirotodevl">GitHubプロフィールへ</a>
+
+<header>
+  <h1>My GitHub Portfolio</h1>
+  <nav>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="projects" class="projects">
+  <!-- GitHubリポジトリをJSで追加 -->
+</section>
+
+<footer id="contact">
+  <p>© 2025 hirotodevl | 
+     <a href="https://github.com/hirotodevl" target="_blank">GitHub</a> | 
+     <a href="hiro1115ad@gmail.com">Email</a>
+  </p>
+</footer>
+
+<script>
+  const username = "hirotodevl"; // ←ここを自分のGitHubユーザー名に変更
+
+  async function fetchRepos() {
+    const res = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
+    const repos = await res.json();
+    const projectsContainer = document.getElementById("projects");
+
+    repos.forEach(repo => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      // ここではダミー画像を使用、スクショを置き換え可能
+      const img = document.createElement("img");
+      img.src = "https://via.placeholder.com/400x180.png?text=" + encodeURIComponent(repo.name);
+      card.appendChild(img);
+
+      const content = document.createElement("div");
+      content.className = "card-content";
+
+      const title = document.createElement("h3");
+      title.innerText = repo.name;
+      content.appendChild(title);
+
+      const desc = document.createElement("p");
+      desc.innerText = repo.description || "No description";
+      content.appendChild(desc);
+
+      const link = document.createElement("a");
+      link.href = repo.html_url;
+      link.target = "_blank";
+      link.innerText = "GitHub Repo";
+      content.appendChild(link);
+
+      card.appendChild(content);
+      projectsContainer.appendChild(card);
+    });
+  }
+
+  fetchRepos();
+</script>
+
 </body>
 </html>
